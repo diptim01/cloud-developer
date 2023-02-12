@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
@@ -14,14 +14,14 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   app.use(bodyParser.json());
 
   // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
-  app.get( "/filteredimage", async ( req, res ) => {
-    const img_url = req.query.image_url.toString();
+  app.get( "/filteredimage", async (req: Request, res: Response) => {
+    const img_url:string= req.query.image_url.toString();
 
     if (!img_url) {
       return res.status(400).send("image url not included!. Please add a url");
     }
 
-    const filtered_image = await filterImageFromURL(img_url);
+    const filtered_image:string = await filterImageFromURL(img_url);
    
     res.status(200).sendFile(filtered_image, () => {
       deleteLocalFiles([filtered_image]);
@@ -48,7 +48,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   
   // Root Endpoint
   // Displays a simple message to the user
-  app.get( "/", async ( req, res ) => {
+  app.get( "/", async ( req: Request, res: Response) => {
     res.send("try GET /filteredimage?image_url={{}}")
   } );
   
